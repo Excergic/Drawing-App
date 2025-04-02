@@ -1,0 +1,17 @@
+{
+  "name": "ws-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -build",
+    "dev" : "ts-node ./dist/index.js",
+    "start" : "pnpm run build && pnpm run dev"
+  },
+  "dependencies": {
+    "@repo/typescript-config" : "workspace:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
