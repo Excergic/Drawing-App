@@ -1,43 +1,33 @@
 import express from "express";
-import { jwt } from "jsonwebtoken";
-const JWT_SECRET = "djklashdajklsh12e4235"; 
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../../packages/backend-common/config";
+import { middleware } from "./middlewar";
+
 const app = express();
 
 app.use(express.json());
 
 
 app.post('/signup', (req, res) => {
-    const {username, email, password } = req.body;
-    if(!email || !username) {
-        res.status(401).json({message : "User not found!"});
-    }
-
-    const newUser = await new User.findOne({email, username}){
-        username,
-        email,
-        password
-    }
-
-    await newUser.save();
-    res.json({
-        message : "you are signUp!"
-    });
+    //zod validation for signup
 })
 
 app.post("/login", (req, res) => {
-    const { username, email, password } = req.body;
-    if(!email || !username || !password.password){
-        res.status(400).json({message : "Invalid Credentials!"});
-    }
+    const userId = 1;
+    const token = jwt.sign({
+        userId
+    }, JWT_SECRET);
+    
+    res.json({ token });
 })
 
-//middleware to gate the create-room
-app.get("/", (req, res, next) => {
 
-    next();
-})
+app.post("/create-room", middleware, (req, res) => {
+    //db call
 
-app.post("/create-room", (req, res) => {
+    res.json({
+        roomId : 123
+    });
 
 })
 
