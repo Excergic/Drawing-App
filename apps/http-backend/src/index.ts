@@ -2,6 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "@repo/common-backend/config";
 import { middleware } from "./middlewar";
+import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types"
 
 const app = express();
 
@@ -9,10 +10,21 @@ app.use(express.json());
 
 
 app.post('/signup', (req, res) => {
-    //zod validation for signup
+    const data = CreateUserSchema.safeParse(req.body);
+    if(!data.success){
+        res.status(400).json({messsage : "Incorrect Inputs!"})
+    }
+    return;
 })
 
 app.post("/login", (req, res) => {
+    const data = SigninSchema.safeParse(req.body);
+    if(!data.success){
+        res.status(401).json({
+            message : "Invalid Credentials"
+        });
+        return;
+    }
     const userId = 1;
     const token = jwt.sign({
         userId
@@ -23,7 +35,13 @@ app.post("/login", (req, res) => {
 
 
 app.post("/create-room", middleware, (req, res) => {
-    //db call
+    const data = CreateRoomSchema.safeParse(req.body);
+    if(!data.success){
+        res.status(401).json({
+            message : "Invalid Credentials"
+        });
+        return;
+    }
 
     res.json({
         roomId : 123
